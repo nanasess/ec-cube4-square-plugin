@@ -1,0 +1,23 @@
+{
+  "name": "ec-cube/square42",
+  "version": "0.0.1",
+  "description": "EC-CUBE4.2.x plugin for Square",
+  "type": "eccube-plugin",
+  "extra": {
+    "code": "Square42",
+    "id": 999999
+  },
+  "require": {
+    "ec-cube/plugin-installer": "^2.0",
+    "square/square": "25.0.0.20221214"
+  },
+  "config": {
+    "allow-plugins": {
+      "ec-cube/plugin-installer": true,
+      "symfony/flex": true
+    }
+  },
+  "require-dev": {
+    "ec-cube/ec-cube": "^4.2"
+  }
+}

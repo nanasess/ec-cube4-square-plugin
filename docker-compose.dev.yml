@@ -1,0 +1,18 @@
+## docker-compose.dev.yml
+version: '3'
+
+services:
+  ec-cube:
+    entrypoint: >
+      /bin/bash -c "
+      docker-php-entrypoint ls &&
+      composer config repositories.plugin '{\"type\": \"path\", \"url\": \"../plugin\"}' &&
+      bin/console eccube:composer:require $${PLUGIN_NAME} &&
+      bin/console eccube:plugin:enable --code=$${PLUGIN_CODE} &&
+      apache2-foreground
+      "
+    environment:
+      PLUGIN_CODE: Square42
+      PLUGIN_NAME: ec-cube/square42
+    volumes:
+      - ".:/var/www/plugin:cached"
