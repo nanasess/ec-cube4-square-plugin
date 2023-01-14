@@ -1,6 +1,9 @@
 ## docker-compose.dev.yml
 version: '3'
 
+volumes:
+  vendor:
+
 services:
   ec-cube:
     entrypoint: >
@@ -14,5 +17,9 @@ services:
     environment:
       PLUGIN_CODE: Square42
       PLUGIN_NAME: ec-cube/square42
+      APPLICATION_ID: xxx
+      ACCESS_TOKEN: xxx
+      LOCATION_ID: xxx
     volumes:
       - ".:/var/www/plugin:cached"
+      - /var/www/plugin/vendor  # Do not mount

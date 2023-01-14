@@ -1,0 +1,49 @@
+<script src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
+<script>
+ $(function () {
+     $(".ec-orderPayment").last().after($("#credit").detach());
+     $(".ec-blockBtn--action").last().attr("id", "card-button");
+ });
+</script>
+<script type="text/javascript">
+    async function main() {
+      const payments = Square.payments('{{ app.request.server.get('APPLICATION_ID') }}', '{{ app.request.server.get('LOCATION_ID') }}');
+      const card = await payments.card();
+      await card.attach('#card-container');
+
+      async function eventHandler(event) {
+        event.preventDefault();
+        const statusContainer = document.getElementById('payment-status-container');
+
+        try {
+          const result = await card.tokenize();
+          if (result.status === 'OK') {
+            console.log(`Payment token is ${result.token}`);
+              $("#shopping_order_square_payment_token").val(result.token);
+              $("#shopping-form").submit();
+            statusContainer.innerHTML = "Payment Successful";
+          } else {
+            statusContainer.innerHTML = "Payment Failed";
+          }
+        } catch (e) {
+          console.error(e);
+          statusContainer.innerHTML = "Payment Failed";
+        }
+      };
+
+      const cardButton = document.getElementById('card-button');
+      cardButton.addEventListener('click', eventHandler);
+    }
+
+    main();
+  </script>
+  <div id="credit" class="ec-orderPaymentCard">
+      <div class="ec-rectHeading">
+          <h2>カード(暫定実装)</h2>
+      </div>
+      <div class="ec-input">
+          <div id="payment-status-container"></div>
+          <div id="card-container"></div>
+          {{ form_widget(form.square_payment_token) }}
+      </div>
+  </div>
