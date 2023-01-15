@@ -1,0 +1,12 @@
+{
+  "name": "ec-cube4-square-plugin",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:nanasess/ec-cube4-square-plugin.git",
+  "author": "Kentaro Ohkouchi <nanasess@fsm.ne.jp>",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.29.2"
+  },
+  "scripts": {}
+}
