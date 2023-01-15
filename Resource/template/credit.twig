@@ -1,4 +1,8 @@
-<script src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
+{% if square_environment == constant('\\Square\\Environment::PRODUCTION') %}
+    <script src="https://web.squarecdn.com/v1/square.js"></script>
+{% else %}
+    <script src="https://sandbox.web.squarecdn.com/v1/square.js"></script>
+{% endif %}
 <script>
  $(function () {
      $(".ec-orderPayment").last().after($("#credit").detach());
@@ -7,7 +11,7 @@
 </script>
 <script type="text/javascript">
     async function main() {
-      const payments = Square.payments('{{ app.request.server.get('APPLICATION_ID') }}', '{{ app.request.server.get('LOCATION_ID') }}');
+      const payments = Square.payments('{{ square_application_id }}', '{{ square_location_id }}');
       const card = await payments.card();
       await card.attach('#card-container');
 

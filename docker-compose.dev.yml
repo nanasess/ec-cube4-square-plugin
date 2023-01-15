@@ -12,14 +12,17 @@ services:
       composer config repositories.plugin '{\"type\": \"path\", \"url\": \"../plugin\"}' &&
       bin/console eccube:composer:require $${PLUGIN_NAME} &&
       bin/console eccube:plugin:enable --code=$${PLUGIN_CODE} &&
+      bin/console doctrine:query:sql \"INSERT INTO dtb_payment VALUES(5,NULL,'クレジットカード',0,NULL,1,1,NULL,0,'Plugin\\Square42\\Service\\Payment\\Method\\CreditCard',1,'2017-03-07 10:14:52','2017-03-07 10:14:52','payment');\" &&
+      bin/console doctrine:query:sql \"INSERT INTO dtb_payment_option VALUES(1,5,'paymentoption');\" &&
       apache2-foreground
       "
     environment:
       PLUGIN_CODE: Square42
       PLUGIN_NAME: ec-cube/square42
-      APPLICATION_ID: xxx
-      ACCESS_TOKEN: xxx
-      LOCATION_ID: xxx
+      SQUARE_APPLICATION_ID: ${SQUARE_APPLICATION_ID}
+      SQUARE_ACCESS_TOKEN: ${SQUARE_ACCESS_TOKEN}
+      SQUARE_LOCATION_ID: ${SQUARE_LOCATION_ID}
+      SQUARE_ENVIRONMENT: ${SQUARE_ENVIRONMENT}
     volumes:
       - ".:/var/www/plugin:cached"
       - /var/www/plugin/vendor  # Do not mount

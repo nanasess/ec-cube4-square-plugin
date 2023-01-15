@@ -9,7 +9,7 @@ use Eccube\Service\Payment\PaymentMethodInterface;
 use Eccube\Service\Payment\PaymentResult;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
-use Square\Environment;
+use Eccube\Util\StringUtil;
 use Square\Models\CreatePaymentRequest;
 use Square\Models\Currency;
 use Square\Models\Money;
@@ -48,20 +48,20 @@ class CreditCard implements PaymentMethodInterface
     {
         $OrderStatus = $this->orderStatusRepository->find(OrderStatus::PENDING);
         $this->shoppingPurchaseFlow->prepare($this->Order, new PurchaseContext());
-        
+
         return null;
     }
 
     public function checkout()
     {
         $client = SquareClientBuilder::init()
-            ->accessToken(env('ACCESS_TOKEN'))
-            ->environment(Environment::SANDBOX)
+            ->accessToken(env('SQUARE_ACCESS_TOKEN'))
+            ->environment(env('SQUARE_ENVIRONMENT'))
             ->build();
         $paymentApi = $client->getPaymentsApi();
-        
+
         $body_sourceId = $this->Order->getSquarePaymentToken();
-        $body_idempotencyKey = $this->Order->getId();
+        $body_idempotencyKey = StringUtil::random(32);
         $body_amountMoney = new Money();
         $body_amountMoney->setAmount($this->Order->getPaymentTotal());
         $body_amountMoney->setCurrency(Currency::JPY);
@@ -74,7 +74,7 @@ class CreditCard implements PaymentMethodInterface
         // if ($this->Order->getCustomer() instanceof Customer) {
         //     $body->setCustomerId($this->Order->getCustomer()->getId());
         // }
-        $body->setLocationId('LHM53257CST5B');
+        $body->setLocationId(env('SQUARE_LOCATION_ID'));
         $body->setReferenceId($this->Order->getOrderNo());
 
         $apiResponse = $paymentApi->createPayment($body);
