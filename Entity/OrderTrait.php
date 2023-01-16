@@ -22,6 +22,11 @@ trait OrderTrait
      * @ORM\Column(type="string", length=4, nullable=true)
      */
     private $card_number_last4;
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=128, nullable=true)
+     */
+    private $card_brand;
 
     public function getSquarePaymentToken(): ?string
     {
@@ -40,9 +45,21 @@ trait OrderTrait
         return $this->card_number_last4;
     }
 
-    private function setCardNumberLast4(?string $card_number_last4): self
+    public function setCardNumberLast4(?string $card_number_last4): self
     {
         $this->card_number_last4 = $card_number_last4;
+
+        return $this;
+    }
+
+    public function getCardBrand(): ?string
+    {
+        return $this->card_brand;
+    }
+
+    public function setCardBrand(?string $card_brand): self
+    {
+        $this->card_brand = $card_brand;
 
         return $this;
     }
