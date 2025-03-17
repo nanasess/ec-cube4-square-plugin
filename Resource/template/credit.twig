@@ -20,13 +20,32 @@
         event.preventDefault();
         const statusContainer = document.getElementById('payment-status-container');
 
-        try {
-          const result = await card.tokenize();
+      try {
+          const verificationDetails = {
+              amount: '{{ Order.payment_total }}',
+              billingContact: {
+                  givenName: '{{ Order.name01 }}',
+                  familyName: '{{ Order.name02 }}',
+                  email: '{{ Order.email }}',
+                  phone: '{{ Order.phone_number }}',
+                  addressLines: ['{{ Order.addr02 }}'],
+                  city: '{{ Order.addr01 }}' ,
+                  state: '{{ Order.pref }}',
+                  countryCode: 'JP',
+                  postalCode: '{{ Order.postal_code }}'
+              },
+              currencyCode: 'JPY',
+              intent: 'CHARGE',
+              customerInitiated: true,
+              sellerKeyedIn: false,
+          };
+          const result = await card.tokenize(verificationDetails);
           if (result.status === 'OK') {
             $("#shopping_order_square_payment_token").val(result.token);
             $("#shopping-form").submit();
           } else {
-            loadingOverlay('hide');
+              loadingOverlay('hide');
+              console.error(result);
           }
         } catch (e) {
           console.error(e);
