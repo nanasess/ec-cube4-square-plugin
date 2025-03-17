@@ -67,9 +67,9 @@ class CreditCard implements PaymentMethodInterface
         $body_amountMoney->setCurrency(Currency::JPY);
         $body = new CreatePaymentRequest(
             $body_sourceId,
-            $body_idempotencyKey,
-            $body_amountMoney
+            $body_idempotencyKey
         );
+        $body->setAmountMoney($body_amountMoney);
         $body->setAutocomplete(true);
         // if ($this->Order->getCustomer() instanceof Customer) {
         //     $body->setCustomerId($this->Order->getCustomer()->getId());

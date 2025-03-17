@@ -3,4 +3,4 @@ twig:
     square_environment: '%env(SQUARE_ENVIRONMENT)%'
     square_application_id: '%env(SQUARE_APPLICATION_ID)%'
     square_access_token: '%env(SQUARE_ACCESS_TOKEN)%'
-    square_location_id: 'env(SQUARE_LOCATION_ID)%'
+    square_location_id: '%env(SQUARE_LOCATION_ID)%'
